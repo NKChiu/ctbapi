@@ -76,6 +76,21 @@ public class CoinController {
 	}
 	
 	//3
+	@PostMapping(path="/updateCurrency")
+	@ResponseBody
+	public CurrencyBean updateCurrency(@RequestBody CurrencyBean currencyBeanInput) {
+		CurrencyBean ouptut = new CurrencyBean();
+		CurrencyBean currencyBean = coinService.updateCurrency(currencyBeanInput);
+		if(currencyBean.isSuccess()) {
+			ouptut.setCode(currencyBean.getCode());
+			ouptut.setCodeChn(currencyBean.getCodeChn());
+			ouptut.setSuccess(true);
+		}else {
+			ouptut.setSuccess(false);
+			ouptut.setReturnMessage(currencyBean.getReturnMessage());
+		}
+		return ouptut;
+	}
 	
 	//4
 	

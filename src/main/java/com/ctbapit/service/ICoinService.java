@@ -11,6 +11,9 @@ public interface ICoinService {
 	public List<CurrencyBean> getAllCurrency();
 	//2
 	public CurrencyBean addCurrency(CurrencyBean currencyBeanInput);
+	//3
+	public CurrencyBean updateCurrency(CurrencyBean currencyBeanInput);
+	
 	//5
 	public CurrentPriceVo getCoinDeskApi();
 	

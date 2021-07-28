@@ -114,7 +114,60 @@ public class CoinServiceImpl implements ICoinService{
 		
 		return output;
 	}
+	
+	
 
+	@Override
+	public CurrencyBean updateCurrency(CurrencyBean currencyBeanInput) {
+		CurrencyBean output = new CurrencyBean();
+		boolean goNext = true;
+		String errMsg = null;
+		
+		CurrencyEntity currencyEntity = null;
+		try {
+			logger.info("查詢更新之幣別對應資料是否存在");
+			currencyEntity = coinDao.findByCode(currencyBeanInput.getCode());
+			if(currencyEntity == null) {
+				goNext = false;
+				errMsg = "更新之幣別對應資料不存在 : " + currencyBeanInput.getCode();
+			}
+		}catch(Exception e) {
+			goNext = false;
+			errMsg = "查詢更新之幣別對應資料是否存在失敗: " + e.getMessage();
+			logger.error(errMsg);
+		}
+		
+		String code = "";
+		String codeChn = "";
+		
+		if(goNext) {
+			try {
+				currencyEntity.setCodeChn(currencyBeanInput.getCodeChn());
+				currencyEntity.setUpdateDate(new Date());
+				CurrencyEntity addCurrency = coinDao.save(currencyEntity);
+				if(addCurrency != null) {
+					code = addCurrency.getCode();
+					codeChn = addCurrency.getCodeChn();
+				}
+			}catch(Exception e) {
+				goNext = false;
+				errMsg = "更新幣別對應資料失敗: " + e.getMessage();
+				logger.error(errMsg);
+			}
+		}
+		
+		
+		if(goNext) {
+			output.setSuccess(true);
+			output.setCode(code);
+			output.setCodeChn(codeChn);
+		}else {
+			output.setSuccess(false);
+			output.setReturnMessage(errMsg);
+		}
+		
+		return output;
+	}
 	
 	
 	@Override
@@ -182,6 +235,8 @@ public class CoinServiceImpl implements ICoinService{
 		
 		return currentPrice;
 	}
+
+
 
 
 

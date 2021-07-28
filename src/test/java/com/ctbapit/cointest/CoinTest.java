@@ -41,6 +41,15 @@ public class CoinTest {
 	}
 	
 	@Test
+	public void updateCurrency() {
+		CurrencyBean currencyBeanInput = new CurrencyBean();
+		currencyBeanInput.setCode("TWD");
+		currencyBeanInput.setCodeChn("台W幣");
+		CurrencyBean output = coinController.updateCurrency(currencyBeanInput);
+		System.out.println(new Gson().toJson(output));
+	}
+	
+	@Test
 	public void getConCoinDeskApi() {
 		CurrentPriceView currentPriceView = coinController.getCoinDeskApi();
 		System.out.println(new Gson().toJson(currentPriceView));
