@@ -9,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -28,6 +29,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CoinServiceImpl implements ICoinService{
 	
 	private static Logger logger = LoggerFactory.getLogger(CoinServiceImpl.class);
+	
+	@Value("${coindeskUrl}")
+	private String COINDESK_URL; // call coindesk url
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -244,7 +248,7 @@ public class CoinServiceImpl implements ICoinService{
 		try {
 			logger.info("1. call coindesk api currentprice");
 			
-			ResponseEntity<String> response = restTemplate.getForEntity("https://api.coindesk.com/v1/bpi/currentprice.json",String.class);
+			ResponseEntity<String> response = restTemplate.getForEntity(COINDESK_URL,String.class);
 			ObjectMapper mapper = new ObjectMapper();
 			
 			JsonNode root = mapper.readTree(response.getBody());
