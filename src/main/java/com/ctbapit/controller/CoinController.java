@@ -46,10 +46,11 @@ public class CoinController {
 	@GetMapping(path="/getAllCurrency")
 	@ResponseBody
 	public CurrencyAllView getAllCurrency() {
+		logger.info("API getAllCurrency");
 		CurrencyAllView currencyAllView = new CurrencyAllView();
 		
 		List<CurrencyBean> currencyBeanList = coinService.getAllCurrency();
-		if(!CollectionUtils.isEmpty(currencyBeanList)) {
+		if(currencyBeanList != null && !CollectionUtils.isEmpty(currencyBeanList)) {
 			currencyAllView.setCurrencyList(currencyBeanList);
 			currencyAllView.setSuccess(true);
 		}else {
@@ -62,10 +63,11 @@ public class CoinController {
 	@PostMapping(path="/addCurrency")
 	@ResponseBody
 	public CurrencyBean addCurrency(@RequestBody CurrencyBean currencyBeanInput) {
+		logger.info("API addCurrency");
 		CurrencyBean ouptut = new CurrencyBean();
 		
 		CurrencyBean currencyBean = coinService.addCurrency(currencyBeanInput);
-		if(currencyBean.isSuccess()) {
+		if(currencyBean != null && currencyBean.isSuccess()) {
 			ouptut.setSuccess(true);
 		}else {
 			ouptut.setSuccess(false);
@@ -79,9 +81,11 @@ public class CoinController {
 	@PostMapping(path="/updateCurrency")
 	@ResponseBody
 	public CurrencyBean updateCurrency(@RequestBody CurrencyBean currencyBeanInput) {
+		logger.info("API updateCurrency");
 		CurrencyBean ouptut = new CurrencyBean();
+		
 		CurrencyBean currencyBean = coinService.updateCurrency(currencyBeanInput);
-		if(currencyBean.isSuccess()) {
+		if(currencyBean != null && currencyBean.isSuccess()) {
 			ouptut.setCode(currencyBean.getCode());
 			ouptut.setCodeChn(currencyBean.getCodeChn());
 			ouptut.setSuccess(true);
@@ -96,9 +100,11 @@ public class CoinController {
 	@PostMapping(path="/deleteCurrency")
 	@ResponseBody
 	public CurrencyBean deleteCurrency(@RequestBody CurrencyBean currencyBeanInput) {
+		logger.info("API deleteCurrency");
 		CurrencyBean output = new CurrencyBean();
+		
 		CurrencyBean currencyBean = coinService.deleteCurrency(currencyBeanInput);
-		if(currencyBean.isSuccess()) {
+		if(currencyBean != null && currencyBean.isSuccess()) {
 			output.setSuccess(true);
 		}else {
 			output.setSuccess(false);
@@ -111,10 +117,11 @@ public class CoinController {
 	@GetMapping(path="/getCoinDeskApi")
 	@ResponseBody
 	public CurrentPriceView getCoinDeskApi() {
+		logger.info("API getCoinDeskApi");
 		CurrentPriceView currentPriceView = new CurrentPriceView();
 		
 		CurrentPriceVo currentPriceVo = coinService.getCoinDeskApi();
-		if(currentPriceVo.isSuccess()) {
+		if( currentPriceVo != null && currentPriceVo.isSuccess()) {
 			currentPriceView = arrangeCurrentPriceView(currentPriceVo);
 			currentPriceView.setSuccess(true);
 		}else {
@@ -129,6 +136,7 @@ public class CoinController {
 	@GetMapping(path="/getTransCoinDeskApi")
 	@ResponseBody
 	public TransCurrentPriceView getTransCoinDeskApi() {
+		logger.info("API getTransCoinDeskApi");
 		TransCurrentPriceView transCurrentPriceView = new TransCurrentPriceView();
 		boolean goNext = true;
 		String errMsg = "";
@@ -147,7 +155,7 @@ public class CoinController {
 		if(goNext) {
 			logger.info("call coindesk api currentprice");
 			CurrentPriceVo currentPriceVo = coinService.getCoinDeskApi();
-			if(currentPriceVo.isSuccess()) {
+			if(currentPriceVo != null && currentPriceVo.isSuccess()) {
 				// 整理 updateTime 
 		        updateTime = this.arrangeTransCurrentPriceViewUpdateTime(currentPriceVo);
 		        // 整理 幣別資訊
