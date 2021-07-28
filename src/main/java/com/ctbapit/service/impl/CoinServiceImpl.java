@@ -18,12 +18,17 @@ import org.springframework.web.client.RestTemplate;
 import com.ctbapit.dao.ICoinDao;
 import com.ctbapit.entity.CurrencyEntity;
 import com.ctbapit.model.bean.CurrencyBean;
+import com.ctbapit.model.config.CurrentPriceConfig;
+import com.ctbapit.model.config.CurrentPriceConfig.CurrentPriceBpiColumn;
+import com.ctbapit.model.config.CurrentPriceConfig.CurrentPriceColumn;
+import com.ctbapit.model.config.CurrentPriceConfig.CurrentPriceTimeColumn;
 import com.ctbapit.model.vo.BpiVo;
 import com.ctbapit.model.vo.CurrentPriceTimeVo;
 import com.ctbapit.model.vo.CurrentPriceVo;
 import com.ctbapit.service.ICoinService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
 @Service
 public class CoinServiceImpl implements ICoinService{
@@ -253,24 +258,24 @@ public class CoinServiceImpl implements ICoinService{
 			
 			JsonNode root = mapper.readTree(response.getBody());
 			
-			JsonNode timeJson = root.get("time");
-			JsonNode bpiJson = root.path("bpi");
-			JsonNode disclaimerJson = root.get("disclaimer");
-			JsonNode chartNameJson = root.get("chartName");
+			JsonNode timeJson = root.get(CurrentPriceColumn.TIME.getCode());
+			JsonNode bpiJson = root.path(CurrentPriceColumn.BPI.getCode());
+			JsonNode disclaimerJson = root.get(CurrentPriceColumn.DISCLAIMER.getCode());
+			JsonNode chartNameJson = root.get(CurrentPriceColumn.CHART_NAME.getCode());
 			
 			currentPriceTimeVo = new CurrentPriceTimeVo(
-				        					timeJson.get("updated").asText(),
-				        					timeJson.get("updatedISO").asText(),
-				        					timeJson.get("updateduk").asText() );
+											timeJson.get(CurrentPriceTimeColumn.UPDATED.getCode()) != null ? timeJson.get(CurrentPriceTimeColumn.UPDATED.getCode()).asText() : "",
+				        					timeJson.get(CurrentPriceTimeColumn.UPDATED_ISO.getCode()) != null ? timeJson.get(CurrentPriceTimeColumn.UPDATED_ISO.getCode()).asText() : "",
+				        					timeJson.get(CurrentPriceTimeColumn.UPDATED_UK.getCode()) != null ? timeJson.get(CurrentPriceTimeColumn.UPDATED_UK.getCode()).asText() : "" );
 			
 			bpiJson.forEach(jsonNode ->{
 				BpiVo bpiVo = new BpiVo(
-						jsonNode.get("code").asText(), 
-						jsonNode.get("symbol").asText(), 
-						jsonNode.get("rate").asText(),
-						jsonNode.get("description").asText(),
-						jsonNode.get("rate_float").asDouble());
-				bpiMap.put(jsonNode.get("code").asText(), bpiVo);
+						jsonNode.get(CurrentPriceBpiColumn.CODE.getCode()) != null ? jsonNode.get(CurrentPriceBpiColumn.CODE.getCode()).asText() : "", 
+						jsonNode.get(CurrentPriceBpiColumn.SYMBOL.getCode()) != null ? jsonNode.get(CurrentPriceBpiColumn.SYMBOL.getCode()).asText() : "", 
+						jsonNode.get(CurrentPriceBpiColumn.RATE.getCode()) != null ? jsonNode.get(CurrentPriceBpiColumn.RATE.getCode()).asText() : "",
+						jsonNode.get(CurrentPriceBpiColumn.DESC.getCode()) != null ? jsonNode.get(CurrentPriceBpiColumn.DESC.getCode()).asText() : "",
+						jsonNode.get(CurrentPriceBpiColumn.RATE_FLOAT.getCode()) != null ? jsonNode.get(CurrentPriceBpiColumn.RATE_FLOAT.getCode()).asDouble() : 0 );
+				bpiMap.put(jsonNode.get(CurrentPriceBpiColumn.CODE.getCode()) != null ? jsonNode.get(CurrentPriceBpiColumn.CODE.getCode()).asText() : "code", bpiVo);
 				
 			});
 			
@@ -300,7 +305,5 @@ public class CoinServiceImpl implements ICoinService{
 		return currentPrice;
 	}
 
-
 	
-
 }
