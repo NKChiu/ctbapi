@@ -3,6 +3,7 @@ package com.ctbapit.model.view;
 public class BpiView {
 	
 	private String code;
+	private String codeChn;
     private String symbol;
     private String rate;
     private String description;
@@ -10,15 +11,15 @@ public class BpiView {
     
     public BpiView() {}
     
-    public BpiView(String code, String symbol, String rate, String description, Double rate_float) {
+	public BpiView(String code, String codeChn, String symbol, String rate, String description, Double rate_float) {
 		super();
 		this.code = code;
+		this.codeChn = codeChn;
 		this.symbol = symbol;
 		this.rate = rate;
 		this.description = description;
 		this.rate_float = rate_float;
 	}
-
 
 	public String getCode() {
         return code;
@@ -27,7 +28,14 @@ public class BpiView {
         this.code = code;
     }
     
-    public String getSymbol() {
+    public String getCodeChn() {
+		return codeChn;
+	}
+	public void setCodeChn(String codeChn) {
+		this.codeChn = codeChn;
+	}
+
+	public String getSymbol() {
         return symbol;
     }
     public void setSymbol(String symbol) {

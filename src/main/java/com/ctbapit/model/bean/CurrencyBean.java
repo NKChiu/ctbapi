@@ -1,7 +1,8 @@
 package com.ctbapit.model.bean;
 
+import com.ctbapit.model.BaseOutput;
 
-public class CurrencyBean {
+public class CurrencyBean extends BaseOutput{
 	
 	private String code;
 	private String codeChn;
