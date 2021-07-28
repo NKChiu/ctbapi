@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class CurrentPriceVo {
 	
-    private Map<String, CurrentPriceTimeVo> time;
+    private CurrentPriceTimeVo time;
     
     private Map<String, BpiVo> bpi;
     
@@ -16,11 +16,11 @@ public class CurrentPriceVo {
     public CurrentPriceVo() {}
     
     
-    public Map<String, CurrentPriceTimeVo> getTime() {
+	public CurrentPriceTimeVo getTime() {
 		return time;
 	}
 
-	public void setTime(Map<String, CurrentPriceTimeVo> time) {
+	public void setTime(CurrentPriceTimeVo time) {
 		this.time = time;
 	}
 
