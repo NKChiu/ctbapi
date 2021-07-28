@@ -32,8 +32,17 @@ public class CoinServiceImpl implements ICoinService{
 	public CurrentPriceVo getCoinDeskApi() {
 		
 		CurrentPriceVo currentPrice = new CurrentPriceVo();
+		boolean goNext = true;
+		String errMsg = "";
+		
+		CurrentPriceTimeVo currentPriceTimeVo = null;
+		Map<String, BpiVo> bpiMap = new HashMap<>();
+		String disclaimer = null;
+		String chartName = null;
 		
 		try {
+			logger.info("call coindesk api currentprice");
+			
 			ResponseEntity<String> response = restTemplate.getForEntity("https://api.coindesk.com/v1/bpi/currentprice.json",String.class);
 			ObjectMapper mapper = new ObjectMapper();
 			
@@ -44,16 +53,10 @@ public class CoinServiceImpl implements ICoinService{
 			JsonNode disclaimerJson = root.get("disclaimer");
 			JsonNode chartNameJson = root.get("chartName");
 			
-			CurrentPriceTimeVo currentPriceTimeVo =
-	        			new CurrentPriceTimeVo(
-	        					timeJson.get("updated").asText(),
-	        					timeJson.get("updatedISO").asText(),
-	        					timeJson.get("updateduk").asText() );
-			
-			currentPrice.setTime(currentPriceTimeVo);
-			 
-			 
-			Map<String, BpiVo> bpiMap = new HashMap<String, BpiVo>();
+			currentPriceTimeVo = new CurrentPriceTimeVo(
+				        					timeJson.get("updated").asText(),
+				        					timeJson.get("updatedISO").asText(),
+				        					timeJson.get("updateduk").asText() );
 			
 			bpiJson.forEach(jsonNode ->{
 				BpiVo bpiVo = new BpiVo(
@@ -65,14 +68,27 @@ public class CoinServiceImpl implements ICoinService{
 				bpiMap.put(jsonNode.get("code").asText(), bpiVo);
 				
 			});
-			currentPrice.setBpi(bpiMap);
 			
 			
-			currentPrice.setDisclaimer(disclaimerJson.asText());
-			currentPrice.setChartName(chartNameJson.asText());
+			disclaimer = disclaimerJson.asText();
+			chartName = chartNameJson.asText();
 			
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			goNext = false;
+			errMsg = "call coindesk api currentprice error: " + e.getMessage();
+			logger.error(errMsg);
+		}
+		
+		// arrange data
+		if(goNext) {
+			currentPrice.setSuccess(true);
+			currentPrice.setTime(currentPriceTimeVo);
+			currentPrice.setBpi(bpiMap);
+			currentPrice.setDisclaimer(disclaimer);
+			currentPrice.setChartName(chartName);
+		}else {
+			currentPrice.setSuccess(false);
+			currentPrice.setRetunrMessage(errMsg);
 		}
 		
 		return currentPrice;
