@@ -2,7 +2,6 @@ package com.ctbapit.service;
 
 import java.util.List;
 
-import com.ctbapit.entity.CurrencyEntity;
 import com.ctbapit.model.bean.CurrencyBean;
 import com.ctbapit.model.vo.CurrentPriceVo;
 

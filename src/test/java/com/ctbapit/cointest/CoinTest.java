@@ -13,8 +13,6 @@ import com.ctbapit.model.bean.CurrencyBean;
 import com.ctbapit.model.view.CurrencyAllView;
 import com.ctbapit.model.view.CurrentPriceView;
 import com.ctbapit.model.view.TransCurrentPriceView;
-import com.ctbapit.model.vo.CurrentPriceVo;
-import com.ctbapit.service.ICoinService;
 import com.google.gson.Gson;
 
 @RunWith(SpringRunner.class)

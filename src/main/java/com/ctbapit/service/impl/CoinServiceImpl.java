@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +21,8 @@ import com.ctbapit.model.vo.BpiVo;
 import com.ctbapit.model.vo.CurrentPriceTimeVo;
 import com.ctbapit.model.vo.CurrentPriceVo;
 import com.ctbapit.service.ICoinService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 
 @Service
 public class CoinServiceImpl implements ICoinService{

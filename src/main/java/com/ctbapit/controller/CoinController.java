@@ -1,12 +1,10 @@
 package com.ctbapit.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ctbapit.entity.CurrencyEntity;
 import com.ctbapit.model.bean.CurrencyBean;
 import com.ctbapit.model.view.BpiView;
 import com.ctbapit.model.view.CurrencyAllView;
@@ -31,8 +28,6 @@ import com.ctbapit.model.vo.CurrentPriceTimeVo;
 import com.ctbapit.model.vo.CurrentPriceVo;
 import com.ctbapit.service.ICoinService;
 import com.ctbapit.util.DateUtil;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 @RestController
 public class CoinController {
