@@ -37,7 +37,10 @@ public class CoinController {
 	@Autowired
 	private ICoinService coinService;
 	
-	//1
+	
+	/**
+	 * @description API_1 : 查詢幣別對應表
+	 */
 	@GetMapping(path="/getAllCurrency")
 	@ResponseBody
 	public CurrencyAllView getAllCurrency() {
@@ -54,7 +57,9 @@ public class CoinController {
 		return currencyAllView;
 	}
 	
-	//2
+	/**
+	 * @description API_2 : 新增幣別對應表資料
+	 */
 	@PostMapping(path="/addCurrency")
 	@ResponseBody
 	public CurrencyBean addCurrency(@RequestBody CurrencyBean currencyBeanInput) {
@@ -72,7 +77,9 @@ public class CoinController {
 		return ouptut;
 	}
 	
-	//3
+	/**
+	 * @description API_3 : 更新幣別對應表資料
+	 */
 	@PostMapping(path="/updateCurrency")
 	@ResponseBody
 	public CurrencyBean updateCurrency(@RequestBody CurrencyBean currencyBeanInput) {
@@ -91,7 +98,9 @@ public class CoinController {
 		return ouptut;
 	}
 	
-	//4
+	/**
+	 * @description API_4 : 刪除幣別對應表資料
+	 */
 	@PostMapping(path="/deleteCurrency")
 	@ResponseBody
 	public CurrencyBean deleteCurrency(@RequestBody CurrencyBean currencyBeanInput) {
@@ -108,7 +117,9 @@ public class CoinController {
 		return output;
 	}
 	
-	//5
+	/**
+	 * @description API_5 : call coindesk API (原本的 API)
+	 */
 	@GetMapping(path="/getCoinDeskApi")
 	@ResponseBody
 	public CurrentPriceView getCoinDeskApi() {
@@ -127,7 +138,9 @@ public class CoinController {
 		 return currentPriceView;
 	}
 	
-	//6
+	/**
+	 * @description API_6 : call coindesk API (資料轉換)
+	 */
 	@GetMapping(path="/getTransCoinDeskApi")
 	@ResponseBody
 	public TransCurrentPriceView getTransCoinDeskApi() {
@@ -136,7 +149,7 @@ public class CoinController {
 		boolean goNext = true;
 		String errMsg = "";
 		
-		logger.info("取得幣別對應資料");
+		logger.info("1. 取得幣別對應資料");
 		List<CurrencyBean> currencyBeanList = coinService.getAllCurrency();
 		if(CollectionUtils.isEmpty(currencyBeanList)) {
 			goNext = false;
@@ -148,7 +161,7 @@ public class CoinController {
 		Map<String, BpiView> currencyInfo = new HashMap<>();
 		
 		if(goNext) {
-			logger.info("call coindesk api currentprice");
+			logger.info("2. call coindesk api currentprice");
 			CurrentPriceVo currentPriceVo = coinService.getCoinDeskApi();
 			if(currentPriceVo != null && currentPriceVo.isSuccess()) {
 				// 整理 updateTime 
@@ -162,6 +175,7 @@ public class CoinController {
 		}
 		
 		// 整理 output
+		logger.info("3. 整理輸出");
 		if(goNext) {
 			transCurrentPriceView.setUpdateTime(updateTime);
 			transCurrentPriceView.setCurrencyInfo(currencyInfo);

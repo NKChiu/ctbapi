@@ -36,6 +36,9 @@ public class CoinServiceImpl implements ICoinService{
 	private ICoinDao coinDao;
 	
 
+	/**
+	 * @see com.ctbapit.service.ICoinService#getAllCurrency()
+	 **/
 	@Override
 	public List<CurrencyBean> getAllCurrency() {
 		List<CurrencyBean> currencyBeanList = new ArrayList<>();
@@ -58,6 +61,9 @@ public class CoinServiceImpl implements ICoinService{
 	}
 
 
+	/**
+	 * @see com.ctbapit.service.ICoinService#addCurrency(com.ctbapit.model.bean.CurrencyBean)
+	 **/
 	@Override
 	public CurrencyBean addCurrency(CurrencyBean currencyBeanInput) {
 		CurrencyBean output = new CurrencyBean();
@@ -65,7 +71,7 @@ public class CoinServiceImpl implements ICoinService{
 		String errMsg = null;
 		
 		try {
-			logger.info("查詢幣別對應資料是否重複");
+			logger.info("1. 查詢幣別對應資料是否重複");
 			CurrencyEntity currencyEntity = coinDao.findByCode(currencyBeanInput.getCode());
 			if(currencyEntity != null) {
 				goNext = false;
@@ -82,7 +88,7 @@ public class CoinServiceImpl implements ICoinService{
 		
 		if(goNext) {
 			try {
-				logger.info("新增幣別對應資料");
+				logger.info("2. 新增幣別對應資料");
 				CurrencyEntity currencyEntity = new CurrencyEntity();
 				currencyEntity.setCode(currencyBeanInput.getCode());
 				currencyEntity.setCodeChn(currencyBeanInput.getCodeChn());
@@ -100,6 +106,7 @@ public class CoinServiceImpl implements ICoinService{
 			}
 		}
 		
+		logger.info("3. 整理輸出");
 		if(goNext) {
 			output.setSuccess(true);
 			output.setCode(code);
@@ -114,6 +121,9 @@ public class CoinServiceImpl implements ICoinService{
 	
 	
 
+	/**
+	 * @see com.ctbapit.service.ICoinService#updateCurrency(com.ctbapit.model.bean.CurrencyBean)
+	 **/
 	@Override
 	public CurrencyBean updateCurrency(CurrencyBean currencyBeanInput) {
 		CurrencyBean output = new CurrencyBean();
@@ -122,7 +132,7 @@ public class CoinServiceImpl implements ICoinService{
 		
 		CurrencyEntity currencyEntity = null;
 		try {
-			logger.info("查詢更新之幣別對應資料是否存在");
+			logger.info("1. 查詢更新之幣別對應資料是否存在");
 			currencyEntity = coinDao.findByCode(currencyBeanInput.getCode());
 			if(currencyEntity == null) {
 				goNext = false;
@@ -139,6 +149,7 @@ public class CoinServiceImpl implements ICoinService{
 		
 		if(goNext) {
 			try {
+				logger.info("2. 更新幣別對應資料");
 				currencyEntity.setCodeChn(currencyBeanInput.getCodeChn());
 				currencyEntity.setUpdateUser(currencyBeanInput.getUpdateUser());
 				currencyEntity.setUpdateDate(new Date());
@@ -154,7 +165,7 @@ public class CoinServiceImpl implements ICoinService{
 			}
 		}
 		
-		
+		logger.info("3. 整理輸出");
 		if(goNext) {
 			output.setSuccess(true);
 			output.setCode(code);
@@ -168,6 +179,9 @@ public class CoinServiceImpl implements ICoinService{
 	}
 	
 	
+	/**
+	 * @see com.ctbapit.service.ICoinService#deleteCurrency(com.ctbapit.model.bean.CurrencyBean)
+	 **/
 	@Override
 	public CurrencyBean deleteCurrency(CurrencyBean currencyBeanInput) {
 
@@ -177,7 +191,7 @@ public class CoinServiceImpl implements ICoinService{
 		
 		CurrencyEntity currencyEntity = null;
 		try {
-			logger.info("查詢刪除之幣別對應資料是否存在");
+			logger.info("1. 查詢刪除之幣別對應資料是否存在");
 			currencyEntity = coinDao.findByCode(currencyBeanInput.getCode());
 			if(currencyEntity == null) {
 				goNext = false;
@@ -191,7 +205,7 @@ public class CoinServiceImpl implements ICoinService{
 		
 		if(goNext) {
 			try {
-				logger.info("刪除幣別對應資料: " + currencyEntity.getCode());
+				logger.info("2. 刪除幣別對應資料: " + currencyEntity.getCode());
 				coinDao.delete(currencyEntity);
 			}catch(Exception e) {
 				goNext = false;
@@ -200,6 +214,7 @@ public class CoinServiceImpl implements ICoinService{
 			}
 		}
 		
+		logger.info("3. 整理輸出");
 		if(goNext) {
 			output.setSuccess(true);
 		}else {
@@ -211,6 +226,9 @@ public class CoinServiceImpl implements ICoinService{
 	}
 
 	
+	/**
+	 * @see com.ctbapit.service.ICoinService#getCoinDeskApi()
+	 **/
 	@Override
 	public CurrentPriceVo getCoinDeskApi() {
 		
@@ -224,7 +242,7 @@ public class CoinServiceImpl implements ICoinService{
 		String chartName = null;
 		
 		try {
-			logger.info("call coindesk api currentprice");
+			logger.info("1. call coindesk api currentprice");
 			
 			ResponseEntity<String> response = restTemplate.getForEntity("https://api.coindesk.com/v1/bpi/currentprice.json",String.class);
 			ObjectMapper mapper = new ObjectMapper();
@@ -262,7 +280,8 @@ public class CoinServiceImpl implements ICoinService{
 			logger.error(errMsg);
 		}
 		
-		// arrange data
+		
+		logger.info("2. 整理輸出");
 		if(goNext) {
 			currentPrice.setSuccess(true);
 			currentPrice.setTime(currentPriceTimeVo);

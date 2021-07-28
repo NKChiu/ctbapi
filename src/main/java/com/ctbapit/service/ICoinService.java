@@ -6,15 +6,30 @@ import com.ctbapit.model.bean.CurrencyBean;
 import com.ctbapit.model.vo.CurrentPriceVo;
 
 public interface ICoinService {
-	//1
+	
+	/**
+	 * @description API_1 : 查詢幣別對應表
+	 */
 	public List<CurrencyBean> getAllCurrency();
-	//2
+	
+	/**
+	 * @description API_2 : 新增幣別對應表資料
+	 */
 	public CurrencyBean addCurrency(CurrencyBean currencyBeanInput);
-	//3
+	
+	/**
+	 * @description API_3 : 更新幣別對應表資料
+	 */
 	public CurrencyBean updateCurrency(CurrencyBean currencyBeanInput);
-	//4
+	
+	/**
+	 * @description API_4 : 刪除幣別對應表資料
+	 */
 	public CurrencyBean deleteCurrency(CurrencyBean currencyBeanInput);
-	//5
+	
+	/**
+	 * @description API_5 : call coindesk API (原本的 API)
+	 */
 	public CurrentPriceVo getCoinDeskApi();
 	
 }
