@@ -1,6 +1,8 @@
 package com.ctbapit.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -9,8 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
+import com.ctbapit.dao.ICoinDao;
+import com.ctbapit.entity.CurrencyEntity;
+import com.ctbapit.model.bean.CurrencyBean;
 import com.ctbapit.model.vo.BpiVo;
 import com.ctbapit.model.vo.CurrentPriceTimeVo;
 import com.ctbapit.model.vo.CurrentPriceVo;
@@ -27,6 +33,34 @@ public class CoinServiceImpl implements ICoinService{
 	
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Autowired
+	private ICoinDao coinDao;
+	
+
+	@Override
+	public List<CurrencyBean> getAllCurrency() {
+		List<CurrencyBean> currencyBeanList = new ArrayList<>();
+		
+		try {
+			logger.info("查詢幣別對應資料");
+			 List<CurrencyEntity> currencyEntityList = (List<CurrencyEntity>) coinDao.findAll();
+			 if(!CollectionUtils.isEmpty(currencyEntityList)) {
+				 for(CurrencyEntity currencyEntity : currencyEntityList) {
+					 CurrencyBean currencyBean = new CurrencyBean();
+					 currencyBean.setCode(currencyEntity.getCode());
+					 currencyBean.setCodeChn(currencyEntity.getCodeChn());
+					 currencyBeanList.add(currencyBean);
+				 }
+			 }
+		}catch(Exception e) {
+			logger.error("查詢幣別對應資料失敗: " + e.getMessage());
+		}
+		return currencyBeanList;
+	}
+
+	
+	
 	
 	@Override
 	public CurrentPriceVo getCoinDeskApi() {
@@ -93,6 +127,12 @@ public class CoinServiceImpl implements ICoinService{
 		
 		return currentPrice;
 	}
+
+
+
+
+
+	
 	
 	
 	

@@ -1,16 +1,21 @@
 package com.ctbapit.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ctbapit.entity.CurrencyEntity;
+import com.ctbapit.model.bean.CurrencyBean;
 import com.ctbapit.model.view.BpiView;
+import com.ctbapit.model.view.CurrencyAllView;
 import com.ctbapit.model.view.CurrentPriceTimeView;
 import com.ctbapit.model.view.CurrentPriceView;
 import com.ctbapit.model.vo.BpiVo;
@@ -25,6 +30,23 @@ public class CoinController {
 	@Autowired
 	private ICoinService coinService;
 	
+	//1
+	@GetMapping(path="/getAllCurrency")
+	@ResponseBody
+	public CurrencyAllView getAllCurrency() {
+		CurrencyAllView currencyAllView = new CurrencyAllView();
+		
+		List<CurrencyBean> currencyBeanList = coinService.getAllCurrency();
+		if(!CollectionUtils.isEmpty(currencyBeanList)) {
+			currencyAllView.setCurrencyList(currencyBeanList);
+			currencyAllView.setSuccess(true);
+		}else {
+			currencyAllView.setRetunrMessage("幣別對應資料為空");
+		}
+		return currencyAllView;
+	}
+	
+	//5
 	@GetMapping(path="/getCoinDeskApi")
 	@ResponseBody
 	public CurrentPriceView getCoinDeskApi() {

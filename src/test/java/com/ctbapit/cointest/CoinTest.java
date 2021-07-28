@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.ctbapit.CtbapiApplication;
 import com.ctbapit.config.UnitTestConfig;
 import com.ctbapit.controller.CoinController;
+import com.ctbapit.model.view.CurrencyAllView;
 import com.ctbapit.model.view.CurrentPriceView;
 import com.ctbapit.model.vo.CurrentPriceVo;
 import com.ctbapit.service.ICoinService;
@@ -20,6 +21,12 @@ public class CoinTest {
 	
 	@Autowired
 	private CoinController coinController;
+	
+	@Test
+	public void getAllCurrency() {
+		CurrencyAllView currencyAllView = coinController.getAllCurrency();
+		System.out.println(new Gson().toJson(currencyAllView));
+	}
 	
 	@Test
 	public void getConCoinDeskApi() {
