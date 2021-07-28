@@ -3,7 +3,7 @@ package com.ctbapit.model;
 public class BaseOutput {
 	
 	private boolean success;
-	private String retunrMessage;
+	private String returnMessage;
 	
 	public boolean isSuccess() {
 		return success;
@@ -11,12 +11,11 @@ public class BaseOutput {
 	public void setSuccess(boolean success) {
 		this.success = success;
 	}
-	public String getRetunrMessage() {
-		return retunrMessage;
+	public String getReturnMessage() {
+		return returnMessage;
 	}
-	public void setRetunrMessage(String retunrMessage) {
-		this.retunrMessage = retunrMessage;
+	public void setReturnMessage(String returnMessage) {
+		this.returnMessage = returnMessage;
 	}
-	
 	
 }

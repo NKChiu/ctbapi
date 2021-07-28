@@ -53,7 +53,7 @@ public class CoinController {
 			currencyAllView.setCurrencyList(currencyBeanList);
 			currencyAllView.setSuccess(true);
 		}else {
-			currencyAllView.setRetunrMessage("幣別對應資料為空");
+			currencyAllView.setReturnMessage("幣別對應資料為空");
 		}
 		return currencyAllView;
 	}
@@ -69,7 +69,7 @@ public class CoinController {
 			ouptut.setSuccess(true);
 		}else {
 			ouptut.setSuccess(false);
-			ouptut.setRetunrMessage(currencyBean.getRetunrMessage());
+			ouptut.setReturnMessage(currencyBean.getReturnMessage());
 		}
 		
 		return ouptut;
@@ -92,7 +92,7 @@ public class CoinController {
 			currentPriceView.setSuccess(true);
 		}else {
 			currentPriceView.setSuccess(false);
-			currentPriceView.setRetunrMessage(currentPriceVo.getRetunrMessage());
+			currentPriceView.setReturnMessage(currentPriceVo.getReturnMessage());
 		}
 		 
 		 return currentPriceView;
@@ -127,7 +127,7 @@ public class CoinController {
 		        currencyInfo = this.arrangeTransCurrentPriceViewCurrencyInfo(currentPriceVo, currencyBeanList);
 			}else {
 				goNext = false;
-				errMsg = currentPriceVo.getRetunrMessage();
+				errMsg = currentPriceVo.getReturnMessage();
 			}
 		}
 		
@@ -138,7 +138,7 @@ public class CoinController {
 			transCurrentPriceView.setSuccess(true);
 		}else {
 			transCurrentPriceView.setSuccess(false);
-			transCurrentPriceView.setRetunrMessage(errMsg);
+			transCurrentPriceView.setReturnMessage(errMsg);
 		}
 		
 		

@@ -109,7 +109,7 @@ public class CoinServiceImpl implements ICoinService{
 			output.setCodeChn(codeChn);
 		}else {
 			output.setSuccess(false);
-			output.setRetunrMessage(errMsg);
+			output.setReturnMessage(errMsg);
 		}
 		
 		return output;
@@ -177,7 +177,7 @@ public class CoinServiceImpl implements ICoinService{
 			currentPrice.setChartName(chartName);
 		}else {
 			currentPrice.setSuccess(false);
-			currentPrice.setRetunrMessage(errMsg);
+			currentPrice.setReturnMessage(errMsg);
 		}
 		
 		return currentPrice;
