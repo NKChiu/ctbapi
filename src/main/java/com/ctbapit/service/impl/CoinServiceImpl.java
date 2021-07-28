@@ -59,7 +59,9 @@ public class CoinServiceImpl implements ICoinService{
 				BpiVo bpiVo = new BpiVo(
 						jsonNode.get("code").asText(), 
 						jsonNode.get("symbol").asText(), 
-						jsonNode.get("rate").asText());
+						jsonNode.get("rate").asText(),
+						jsonNode.get("description").asText(),
+						jsonNode.get("rate_float").asDouble());
 				bpiMap.put(jsonNode.get("code").asText(), bpiVo);
 				
 			});
