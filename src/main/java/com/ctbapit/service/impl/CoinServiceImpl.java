@@ -1,6 +1,7 @@
 package com.ctbapit.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,61 @@ public class CoinServiceImpl implements ICoinService{
 		return currencyBeanList;
 	}
 
-	
+
+	@Override
+	public CurrencyBean addCurrency(CurrencyBean currencyBeanInput) {
+		CurrencyBean output = new CurrencyBean();
+		boolean goNext = true;
+		String errMsg = null;
+		
+		try {
+			logger.info("查詢幣別對應資料是否重複");
+			CurrencyEntity currencyEntity = coinDao.findByCode(currencyBeanInput.getCode());
+			if(currencyEntity != null) {
+				goNext = false;
+				errMsg = "幣別對應資料重複 : " + currencyBeanInput.getCode();
+			}
+		}catch(Exception e) {
+			goNext = false;
+			errMsg = "查詢幣別對應資料是否重複失敗: " + e.getMessage();
+			logger.error(errMsg);
+		}
+		
+		String code = "";
+		String codeChn = "";
+		
+		if(goNext) {
+			try {
+				logger.info("新增幣別對應資料");
+				CurrencyEntity currencyEntity = new CurrencyEntity();
+				currencyEntity.setCode(currencyBeanInput.getCode());
+				currencyEntity.setCodeChn(currencyBeanInput.getCodeChn());
+				currencyEntity.setUpdateUser("SYSTEM");
+				currencyEntity.setUpdateDate(new Date());
+				CurrencyEntity saveEntity = coinDao.save(currencyEntity);
+				if(saveEntity != null) {
+					code = saveEntity.getCode();
+					codeChn = saveEntity.getCodeChn();
+				}
+			}catch(Exception e) {
+				goNext = false;
+				errMsg = "新增幣別對應資料失敗: " + e.getMessage();
+				logger.error(errMsg);
+			}
+		}
+		
+		if(goNext) {
+			output.setSuccess(true);
+			output.setCode(code);
+			output.setCodeChn(codeChn);
+		}else {
+			output.setSuccess(false);
+			output.setRetunrMessage(errMsg);
+		}
+		
+		return output;
+	}
+
 	
 	
 	@Override
@@ -127,6 +182,9 @@ public class CoinServiceImpl implements ICoinService{
 		
 		return currentPrice;
 	}
+
+
+
 
 
 

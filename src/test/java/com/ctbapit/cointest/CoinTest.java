@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.ctbapit.CtbapiApplication;
 import com.ctbapit.config.UnitTestConfig;
 import com.ctbapit.controller.CoinController;
+import com.ctbapit.model.bean.CurrencyBean;
 import com.ctbapit.model.view.CurrencyAllView;
 import com.ctbapit.model.view.CurrentPriceView;
 import com.ctbapit.model.view.TransCurrentPriceView;
@@ -27,6 +28,16 @@ public class CoinTest {
 	public void getAllCurrency() {
 		CurrencyAllView currencyAllView = coinController.getAllCurrency();
 		System.out.println(new Gson().toJson(currencyAllView));
+	}
+	
+	
+	@Test
+	public void addCurrency() {
+		CurrencyBean currencyBeanInput = new CurrencyBean();
+		currencyBeanInput.setCode("TWD");
+		currencyBeanInput.setCodeChn("台幣");
+		CurrencyBean output = coinController.addCurrency(currencyBeanInput);
+		System.out.println(new Gson().toJson(output));
 	}
 	
 	@Test

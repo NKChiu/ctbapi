@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,6 +57,28 @@ public class CoinController {
 		}
 		return currencyAllView;
 	}
+	
+	//2
+	@PostMapping(path="/addCurrency")
+	@ResponseBody
+	public CurrencyBean addCurrency(@RequestBody CurrencyBean currencyBeanInput) {
+		CurrencyBean ouptut = new CurrencyBean();
+		
+		CurrencyBean currencyBean = coinService.addCurrency(currencyBeanInput);
+		if(currencyBean.isSuccess()) {
+			ouptut.setSuccess(true);
+		}else {
+			ouptut.setSuccess(false);
+			ouptut.setRetunrMessage(currencyBean.getRetunrMessage());
+		}
+		
+		return ouptut;
+	}
+	
+	//3
+	
+	//4
+	
 	
 	//5
 	@GetMapping(path="/getCoinDeskApi")
