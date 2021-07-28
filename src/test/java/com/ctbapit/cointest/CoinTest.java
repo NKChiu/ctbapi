@@ -50,6 +50,15 @@ public class CoinTest {
 	}
 	
 	@Test
+	public void deleteCurrency() {
+		CurrencyBean currencyBeanInput = new CurrencyBean();
+		currencyBeanInput.setCode("TWD");
+		CurrencyBean output = coinController.deleteCurrency(currencyBeanInput);
+		System.out.println(new Gson().toJson(output));
+	}
+	
+	
+	@Test
 	public void getConCoinDeskApi() {
 		CurrentPriceView currentPriceView = coinController.getCoinDeskApi();
 		System.out.println(new Gson().toJson(currentPriceView));

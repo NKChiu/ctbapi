@@ -13,7 +13,8 @@ public interface ICoinService {
 	public CurrencyBean addCurrency(CurrencyBean currencyBeanInput);
 	//3
 	public CurrencyBean updateCurrency(CurrencyBean currencyBeanInput);
-	
+	//4
+	public CurrencyBean deleteCurrency(CurrencyBean currencyBeanInput);
 	//5
 	public CurrentPriceVo getCoinDeskApi();
 	

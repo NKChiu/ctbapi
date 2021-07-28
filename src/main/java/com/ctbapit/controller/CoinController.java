@@ -93,7 +93,19 @@ public class CoinController {
 	}
 	
 	//4
-	
+	@PostMapping(path="/deleteCurrency")
+	@ResponseBody
+	public CurrencyBean deleteCurrency(@RequestBody CurrencyBean currencyBeanInput) {
+		CurrencyBean output = new CurrencyBean();
+		CurrencyBean currencyBean = coinService.deleteCurrency(currencyBeanInput);
+		if(currencyBean.isSuccess()) {
+			output.setSuccess(true);
+		}else {
+			output.setSuccess(false);
+			output.setReturnMessage(currencyBean.getReturnMessage());
+		}
+		return output;
+	}
 	
 	//5
 	@GetMapping(path="/getCoinDeskApi")

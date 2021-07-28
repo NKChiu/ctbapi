@@ -171,6 +171,49 @@ public class CoinServiceImpl implements ICoinService{
 	
 	
 	@Override
+	public CurrencyBean deleteCurrency(CurrencyBean currencyBeanInput) {
+
+		CurrencyBean output = new CurrencyBean();
+		boolean goNext = true;
+		String errMsg = null;
+		
+		CurrencyEntity currencyEntity = null;
+		try {
+			logger.info("查詢刪除之幣別對應資料是否存在");
+			currencyEntity = coinDao.findByCode(currencyBeanInput.getCode());
+			if(currencyEntity == null) {
+				goNext = false;
+				errMsg = "刪除之幣別對應資料不存在 : " + currencyBeanInput.getCode();
+			}
+		}catch(Exception e) {
+			goNext = false;
+			errMsg = "查詢刪除之幣別對應資料是否存在失敗: " + e.getMessage();
+			logger.error(errMsg);
+		}
+		
+		if(goNext) {
+			try {
+				logger.info("刪除幣別對應資料: " + currencyEntity.getCode());
+				coinDao.delete(currencyEntity);
+			}catch(Exception e) {
+				goNext = false;
+				errMsg = "更新幣別對應資料失敗: " + e.getMessage();
+				logger.error(errMsg);
+			}
+		}
+		
+		if(goNext) {
+			output.setSuccess(true);
+		}else {
+			output.setSuccess(false);
+			output.setReturnMessage(errMsg);
+		}
+		
+		return output;
+	}
+
+	
+	@Override
 	public CurrentPriceVo getCoinDeskApi() {
 		
 		CurrentPriceVo currentPrice = new CurrentPriceVo();
@@ -237,18 +280,6 @@ public class CoinServiceImpl implements ICoinService{
 	}
 
 
-
-
-
-
-
-
-
-
-	
-	
-	
-	
 	
 
 }
