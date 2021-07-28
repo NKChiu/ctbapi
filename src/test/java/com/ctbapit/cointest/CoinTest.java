@@ -11,6 +11,7 @@ import com.ctbapit.config.UnitTestConfig;
 import com.ctbapit.controller.CoinController;
 import com.ctbapit.model.view.CurrencyAllView;
 import com.ctbapit.model.view.CurrentPriceView;
+import com.ctbapit.model.view.TransCurrentPriceView;
 import com.ctbapit.model.vo.CurrentPriceVo;
 import com.ctbapit.service.ICoinService;
 import com.google.gson.Gson;
@@ -34,6 +35,14 @@ public class CoinTest {
 		System.out.println(new Gson().toJson(currentPriceView));
 	}
 	
+	
+	@Test
+	public void getTransCoinDeskApi() {
+		TransCurrentPriceView transCurrentPriceView = coinController.getTransCoinDeskApi();
+		System.out.println(new Gson().toJson(transCurrentPriceView));
+	}
+	
+	
 	@Autowired
 	private ICoinService coinService;
 		
@@ -42,4 +51,6 @@ public class CoinTest {
 		CurrentPriceVo coinDeskApi = coinService.getCoinDeskApi();
 		System.out.println(new Gson().toJson(coinDeskApi));
 	}
+	
+	
 }
