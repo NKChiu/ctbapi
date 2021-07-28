@@ -89,7 +89,7 @@ public class CoinServiceImpl implements ICoinService{
 				CurrencyEntity currencyEntity = new CurrencyEntity();
 				currencyEntity.setCode(currencyBeanInput.getCode());
 				currencyEntity.setCodeChn(currencyBeanInput.getCodeChn());
-				currencyEntity.setUpdateUser("SYSTEM");
+				currencyEntity.setUpdateUser(currencyBeanInput.getUpdateUser());
 				currencyEntity.setUpdateDate(new Date());
 				CurrencyEntity saveEntity = coinDao.save(currencyEntity);
 				if(saveEntity != null) {
@@ -143,6 +143,7 @@ public class CoinServiceImpl implements ICoinService{
 		if(goNext) {
 			try {
 				currencyEntity.setCodeChn(currencyBeanInput.getCodeChn());
+				currencyEntity.setUpdateUser(currencyBeanInput.getUpdateUser());
 				currencyEntity.setUpdateDate(new Date());
 				CurrencyEntity addCurrency = coinDao.save(currencyEntity);
 				if(addCurrency != null) {

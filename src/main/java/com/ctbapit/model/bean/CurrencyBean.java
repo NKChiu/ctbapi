@@ -6,6 +6,7 @@ public class CurrencyBean extends BaseOutput{
 	
 	private String code;
 	private String codeChn;
+	private String updateUser;
 	
 	public CurrencyBean() {}
 
@@ -24,5 +25,14 @@ public class CurrencyBean extends BaseOutput{
 	public void setCodeChn(String codeChn) {
 		this.codeChn = codeChn;
 	}
+
+	public String getUpdateUser() {
+		return updateUser;
+	}
+
+	public void setUpdateUser(String updateUser) {
+		this.updateUser = updateUser;
+	}
+	
 	
 }
