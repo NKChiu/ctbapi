@@ -2,7 +2,9 @@ package com.ctbapit.model.vo;
 
 import java.util.Map;
 
-public class CurrentPriceVo {
+import com.ctbapit.model.BaseOutput;
+
+public class CurrentPriceVo extends BaseOutput{
 	
     private CurrentPriceTimeVo time;
     
