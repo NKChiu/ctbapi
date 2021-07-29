@@ -9,7 +9,7 @@ public class CurrentPriceView extends BaseOutput{
 	
 	private CurrentPriceTimeView time;
     
-    private Map<String, BpiView> bpi;
+    private Map<String, CurrentPriceBpiView> bpi;
     
     private String disclaimer;
     
@@ -29,12 +29,12 @@ public class CurrentPriceView extends BaseOutput{
 	}
 
 
-	public Map<String, BpiView> getBpi() {
+	public Map<String, CurrentPriceBpiView> getBpi() {
 		return bpi;
 	}
 
 
-	public void setBpi(Map<String, BpiView> bpi) {
+	public void setBpi(Map<String, CurrentPriceBpiView> bpi) {
 		this.bpi = bpi;
 	}
 

@@ -22,6 +22,7 @@ import com.ctbapit.model.bean.CurrencyBean;
 import com.ctbapit.model.view.BpiView;
 import com.ctbapit.model.view.CurrencyAllView;
 import com.ctbapit.model.view.CurrencyView;
+import com.ctbapit.model.view.CurrentPriceBpiView;
 import com.ctbapit.model.view.CurrentPriceTimeView;
 import com.ctbapit.model.view.CurrentPriceView;
 import com.ctbapit.model.view.TransCurrentPriceView;
@@ -30,6 +31,7 @@ import com.ctbapit.model.vo.CurrentPriceTimeVo;
 import com.ctbapit.model.vo.CurrentPriceVo;
 import com.ctbapit.service.ICoinService;
 import com.ctbapit.util.DateUtil;
+import com.google.gson.Gson;
 
 @RestController
 public class CoinController {
@@ -219,31 +221,30 @@ public class CoinController {
 		CurrentPriceView currentPriceView = new CurrentPriceView();
 		
 		CurrentPriceTimeVo currentPriceTimeVo = currentPriceVo.getTime();
+		Map<String, BpiVo> bpiVoMap = currentPriceVo.getBpi();
+		String disclaimer = currentPriceVo.getDisclaimer();
+		String chartName = currentPriceVo.getChartName();
+		
+		// arrange time
 		CurrentPriceTimeView currentPriceTimeView = new CurrentPriceTimeView();
 		currentPriceTimeView.setUpdated(currentPriceTimeVo.getUpdated());
 		currentPriceTimeView.setUpdatedISO(currentPriceTimeVo.getUpdatedISO());
 		currentPriceTimeView.setUpdateduk(currentPriceTimeVo.getUpdateduk());
 		
-		Map<String, BpiView> bpiViewMap = new HashMap<>();
-		
-		Map<String, BpiVo> bpiVoMap = currentPriceVo.getBpi();
-		
-		for(Entry<String, BpiVo> key : bpiVoMap.entrySet()) {
-			BpiView bpiView = new BpiView();
-			BpiVo bpiVo = key.getValue();
-			bpiView.setCode(bpiVo.getCode());
-			bpiView.setSymbol(bpiVo.getSymbol());
-			bpiView.setRate(bpiVo.getRate());
-			bpiView.setDescription(bpiVo.getDescription());
-			bpiView.setRate_float(bpiVo.getRate_float());
-			
-			bpiViewMap.put(key.getKey(), bpiView);
-		}
+		// arrange bpi
+		Map<String, CurrentPriceBpiView> currentPriceBpiViewMap = new HashMap<>();
+		bpiVoMap.entrySet().forEach(bpi ->{
+			BpiVo bpiVo = bpi.getValue();
+			CurrentPriceBpiView currentPriceBpiView = new CurrentPriceBpiView(
+						bpiVo.getCode(), bpiVo.getSymbol(), bpiVo.getRate(), 
+						bpiVo.getDescription(), bpiVo.getRate_float() );
+			currentPriceBpiViewMap.put(bpi.getKey(), currentPriceBpiView);
+		});
 		
 		currentPriceView.setTime(currentPriceTimeView);
-		currentPriceView.setBpi(bpiViewMap);
-		currentPriceView.setDisclaimer(currentPriceVo.getDisclaimer());
-		currentPriceView.setChartName(currentPriceVo.getChartName());
+		currentPriceView.setBpi(currentPriceBpiViewMap);
+		currentPriceView.setDisclaimer(disclaimer);
+		currentPriceView.setChartName(chartName);
 		
 		return currentPriceView;
 	}
