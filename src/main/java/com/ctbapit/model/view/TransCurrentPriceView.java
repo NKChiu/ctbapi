@@ -8,7 +8,7 @@ public class TransCurrentPriceView extends BaseOutput{
 	
 	private String updateTime;
 	
-	private Map<String, BpiView> currencyInfo;
+	private Map<String, TransCurrentPriceBpiView> currencyInfo;
 
 	public String getUpdateTime() {
 		return updateTime;
@@ -18,13 +18,14 @@ public class TransCurrentPriceView extends BaseOutput{
 		this.updateTime = updateTime;
 	}
 
-	public Map<String, BpiView> getCurrencyInfo() {
+	public Map<String, TransCurrentPriceBpiView> getCurrencyInfo() {
 		return currencyInfo;
 	}
 
-	public void setCurrencyInfo(Map<String, BpiView> currencyInfo) {
+	public void setCurrencyInfo(Map<String, TransCurrentPriceBpiView> currencyInfo) {
 		this.currencyInfo = currencyInfo;
 	}
+	
 	
 	
 }

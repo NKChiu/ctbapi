@@ -25,6 +25,7 @@ import com.ctbapit.model.view.CurrencyView;
 import com.ctbapit.model.view.CurrentPriceBpiView;
 import com.ctbapit.model.view.CurrentPriceTimeView;
 import com.ctbapit.model.view.CurrentPriceView;
+import com.ctbapit.model.view.TransCurrentPriceBpiView;
 import com.ctbapit.model.view.TransCurrentPriceView;
 import com.ctbapit.model.vo.BpiVo;
 import com.ctbapit.model.vo.CurrentPriceTimeVo;
@@ -166,7 +167,7 @@ public class CoinController {
 		}
 		
 		String updateTime = null;
-		Map<String, BpiView> currencyInfo = new HashMap<>();
+		Map<String, TransCurrentPriceBpiView> currencyInfo = new HashMap<>();
 		
 		if(goNext) {
 			logger.info("2. call coindesk api currentprice");
@@ -265,26 +266,28 @@ public class CoinController {
 	/**
 	 * @descriptino arrange getTransCoinDeskApi CurrencyInfo output
 	 */
-	private Map<String, BpiView> arrangeTransCurrentPriceViewCurrencyInfo(CurrentPriceVo currentPriceVo, List<CurrencyBean> currencyBeanList){
-		Map<String, BpiView> currencyInfo = new HashMap<>();
+	private Map<String, TransCurrentPriceBpiView> arrangeTransCurrentPriceViewCurrencyInfo(CurrentPriceVo currentPriceVo, List<CurrencyBean> currencyBeanList){
+		Map<String, TransCurrentPriceBpiView> currencyInfo = new HashMap<>();
 		
 		Map<String, BpiVo> bpiVoMap = currentPriceVo.getBpi();
-		for(Entry<String, BpiVo> key : bpiVoMap.entrySet()) {
-			BpiView bpiView = new BpiView();
-			BpiVo bpiVo = key.getValue();
-			bpiView.setCode(bpiVo.getCode());
+		bpiVoMap.entrySet().forEach(bpi ->{
+			BpiVo bpiVo = bpi.getValue();
+			TransCurrentPriceBpiView transCurrentPriceBpiView = new TransCurrentPriceBpiView();
 			
+			transCurrentPriceBpiView.setCode(bpiVo.getCode());
+			// 找幣別對應中文
 			CurrencyBean currencyBean = currencyBeanList.stream().filter(b -> b.getCode().equals(bpiVo.getCode())).findAny().orElse(null);
 			if(currencyBean!= null) {
-				bpiView.setCodeChn(currencyBean.getCodeChn());
+				transCurrentPriceBpiView.setCodeChn(currencyBean.getCodeChn());
 			}
 			
-			bpiView.setRate(bpiVo.getRate());
-			bpiView.setSymbol(StringEscapeUtils.unescapeHtml4(bpiVo.getSymbol()));
-			currencyInfo.put(key.getKey(), bpiView);
-		}
+			transCurrentPriceBpiView.setRate(bpiVo.getRate());
+			transCurrentPriceBpiView.setSymbol(StringEscapeUtils.unescapeHtml4(bpiVo.getSymbol()));
+			currencyInfo.put(bpi.getKey(), transCurrentPriceBpiView);
+			
+		});
 		
 		return currencyInfo;
-		
 	}
+	
 }
