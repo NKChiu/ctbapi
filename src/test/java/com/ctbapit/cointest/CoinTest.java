@@ -70,7 +70,7 @@ public class CoinTest {
 	}
 	
 	/**
-	 * @description 測試呼叫 coindesk API
+	 * @description 測試呼叫刪除幣別對應表資料 API
 	 */
 	@Test
 	public void test4() {
