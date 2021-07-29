@@ -85,18 +85,20 @@ public class CoinController {
 	@ResponseBody
 	public CurrencyBean updateCurrency(@RequestBody CurrencyBean currencyBeanInput) {
 		logger.info("API updateCurrency");
-		CurrencyBean ouptut = new CurrencyBean();
+		CurrencyBean output = new CurrencyBean();
 		
 		CurrencyBean currencyBean = coinService.updateCurrency(currencyBeanInput);
 		if(currencyBean != null && currencyBean.isSuccess()) {
-			ouptut.setCode(currencyBean.getCode());
-			ouptut.setCodeChn(currencyBean.getCodeChn());
-			ouptut.setSuccess(true);
+			output.setCode(currencyBean.getCode());
+			output.setCodeChn(currencyBean.getCodeChn());
+			output.setUpdateUser(currencyBean.getUpdateUser());
+			output.setReturnMessage("更新成功");
+			output.setSuccess(true);
 		}else {
-			ouptut.setSuccess(false);
-			ouptut.setReturnMessage(currencyBean.getReturnMessage());
+			output.setSuccess(false);
+			output.setReturnMessage(currencyBean.getReturnMessage());
 		}
-		return ouptut;
+		return output;
 	}
 	
 	/**

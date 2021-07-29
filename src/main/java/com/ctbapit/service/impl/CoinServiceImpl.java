@@ -148,26 +148,36 @@ public class CoinServiceImpl implements ICoinService{
 		boolean goNext = true;
 		String errMsg = null;
 		
-		CurrencyEntity currencyEntity = null;
-		try {
-			logger.info("1. 查詢更新之幣別對應資料是否存在");
-			currencyEntity = coinDao.findByCode(currencyBeanInput.getCode());
-			if(currencyEntity == null) {
-				goNext = false;
-				errMsg = "更新之幣別對應資料不存在 : " + currencyBeanInput.getCode();
-			}
-		}catch(Exception e) {
+		logger.info("1. 驗證輸入必填參數");
+		if(currencyBeanInput != null && !this.validateUpdateCurrency(currencyBeanInput)) {
 			goNext = false;
-			errMsg = "查詢更新之幣別對應資料是否存在失敗: " + e.getMessage();
-			logger.error(errMsg);
+			errMsg = "必填參數為空";
 		}
+		
+		CurrencyEntity currencyEntity = null;
+		if(goNext) {
+			try {
+				logger.info("2. 查詢更新之幣別對應資料是否存在");
+				currencyEntity = coinDao.findByCode(currencyBeanInput.getCode());
+				if(currencyEntity == null) {
+					goNext = false;
+					errMsg = "更新之幣別對應資料不存在 : " + currencyBeanInput.getCode();
+				}
+			}catch(Exception e) {
+				goNext = false;
+				errMsg = "查詢更新之幣別對應資料是否存在失敗: " + e.getMessage();
+				logger.error(errMsg);
+			}
+		}
+		
 		
 		String code = "";
 		String codeChn = "";
+		String updateUser = "";
 		
 		if(goNext) {
 			try {
-				logger.info("2. 更新幣別對應資料");
+				logger.info("3. 更新幣別對應資料");
 				currencyEntity.setCodeChn(currencyBeanInput.getCodeChn());
 				currencyEntity.setUpdateUser(currencyBeanInput.getUpdateUser());
 				currencyEntity.setUpdateDate(new Date());
@@ -175,6 +185,7 @@ public class CoinServiceImpl implements ICoinService{
 				if(addCurrency != null) {
 					code = addCurrency.getCode();
 					codeChn = addCurrency.getCodeChn();
+					updateUser = addCurrency.getUpdateUser();
 				}
 			}catch(Exception e) {
 				goNext = false;
@@ -183,11 +194,12 @@ public class CoinServiceImpl implements ICoinService{
 			}
 		}
 		
-		logger.info("3. 整理輸出");
+		logger.info("4. 整理輸出");
 		if(goNext) {
 			output.setSuccess(true);
 			output.setCode(code);
 			output.setCodeChn(codeChn);
+			output.setUpdateUser(updateUser);
 		}else {
 			output.setSuccess(false);
 			output.setReturnMessage(errMsg);
@@ -330,5 +342,17 @@ public class CoinServiceImpl implements ICoinService{
 	}
 	
 	
+	/**
+	 * @description validate updateCurrency input required
+	 */
+	private boolean validateUpdateCurrency(CurrencyBean currencyBeanInput) {
+		boolean isValidate = true;
+		if(StringUtils.isEmpty(currencyBeanInput.getCode().trim()) ||
+		   StringUtils.isEmpty(currencyBeanInput.getCodeChn().trim()) ||
+		   StringUtils.isEmpty(currencyBeanInput.getUpdateUser().trim()) ) {
+			isValidate = false;
+		}
+		return isValidate; 
+	}
 	
 }
