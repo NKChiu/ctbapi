@@ -3,6 +3,7 @@
   - [功能](#功能)
   - [相關](#相關)
   - [URL](#url)
+  - [Table SQL](#table-sql)
 
 
 # Project : ctbapi
@@ -200,5 +201,40 @@
 
   - <b>H2 db console</b> : http://localhost:8091/console
 
+## Table SQL
+  <details>
+  <summary>Result Output json</summary>
+      
+  ```sql
+  DROP SEQUENCE SEQ_CURRENCY;
+  DROP TABLE CURRENCY_ENTITY;
+
+  CREATE TABLE CURRENCY_ENTITY( 		
+    ID            NUMBER(22)          NOT NULL,	
+    CODE          NVARCHAR2(22)       NOT NULL,	
+    CODE_CHN      NVARCHAR2(22)       NOT NULL,	
+    UPDATE_USER   NVARCHAR2(10)       NOT NULL,	
+    UPDATE_DATE   TIMESTAMP  DEFAULT  SYSTIMESTAMP  NOT NULL
+      );
+      
+  ALTER TABLE CURRENCY_ENTITY ADD CONSTRAINT PK_CURRENCY_ID PRIMARY KEY (ID);
+
+  CREATE SEQUENCE SEQ_CURRENCY NOCACHE MAXVALUE 9223372036854770000 START WITH 1;
+
+  COMMIT;
 
 
+  ------- pre insert data ------------------------------------------------
+
+  INSERT INTO CURRENCY_ENTITY(ID, CODE, CODE_CHN, UPDATE_USER, UPDATE_DATE)
+  VALUES(SEQ_CURRENCY.NEXTVAL, 'USD', '美元', 'SYSTEM', SYSDATE);
+
+  INSERT INTO CURRENCY_ENTITY(ID, CODE, CODE_CHN, UPDATE_USER, UPDATE_DATE)
+  VALUES(SEQ_CURRENCY.NEXTVAL, 'GPB', '英鎊', 'SYSTEM', SYSDATE);
+
+  INSERT INTO CURRENCY_ENTITY(ID, CODE, CODE_CHN, UPDATE_USER, UPDATE_DATE)
+  VALUES(SEQ_CURRENCY.NEXTVAL, 'EUR', '歐元', 'SYSTEM', SYSDATE);
+
+  COMMIT;
+  ```
+  </details>
