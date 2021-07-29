@@ -81,7 +81,7 @@ public class CoinServiceImpl implements ICoinService{
 		String errMsg = null;
 		
 		logger.info("1. 驗證輸入必填參數");
-		if(currencyBeanInput != null && !this.validateAddCurrency(currencyBeanInput)) {
+		if(currencyBeanInput != null && !this.validateAddAndUpdateCurrency(currencyBeanInput)) {
 			goNext = false;
 			errMsg = "必填參數為空";
 		}
@@ -149,7 +149,7 @@ public class CoinServiceImpl implements ICoinService{
 		String errMsg = null;
 		
 		logger.info("1. 驗證輸入必填參數");
-		if(currencyBeanInput != null && !this.validateUpdateCurrency(currencyBeanInput)) {
+		if(currencyBeanInput != null && !this.validateAddAndUpdateCurrency(currencyBeanInput)) {
 			goNext = false;
 			errMsg = "必填參數為空";
 		}
@@ -338,29 +338,34 @@ public class CoinServiceImpl implements ICoinService{
 	
 	
 	/**
-	 * @description validate addCurrency input required
+	 * @description validate addCurrency and updateCurrency input required
 	 */
-	private boolean validateAddCurrency(CurrencyBean currencyBeanInput) {
+	private boolean validateAddAndUpdateCurrency(CurrencyBean currencyBeanInput) {
 		boolean isValidate = true;
-		if(StringUtils.isEmpty(currencyBeanInput.getCode()) ||
-		   StringUtils.isEmpty(currencyBeanInput.getCodeChn()) ||
-		   StringUtils.isEmpty(currencyBeanInput.getUpdateUser()) ) {
-			isValidate = false;
+		if(currencyBeanInput.getCode() == null) {
+			return isValidate = false;
+		}else {
+			if(StringUtils.isEmpty(currencyBeanInput.getCode().trim())){
+				return isValidate = false;	
+			}
 		}
-		return isValidate; 
-	}
-	
-	
-	/**
-	 * @description validate updateCurrency input required
-	 */
-	private boolean validateUpdateCurrency(CurrencyBean currencyBeanInput) {
-		boolean isValidate = true;
-		if(StringUtils.isEmpty(currencyBeanInput.getCode().trim()) ||
-		   StringUtils.isEmpty(currencyBeanInput.getCodeChn().trim()) ||
-		   StringUtils.isEmpty(currencyBeanInput.getUpdateUser().trim()) ) {
-			isValidate = false;
+		
+		if(currencyBeanInput.getCodeChn() == null) {
+			return isValidate = false;
+		}else {
+			if(StringUtils.isEmpty(currencyBeanInput.getCodeChn().trim())){
+				return isValidate = false;	
+			}
 		}
+		
+		if(currencyBeanInput.getUpdateUser() == null) {
+			return isValidate = false;
+		}else {
+			if(StringUtils.isEmpty(currencyBeanInput.getUpdateUser().trim())){
+				return isValidate = false;	
+			}
+		}
+		
 		return isValidate; 
 	}
 	
