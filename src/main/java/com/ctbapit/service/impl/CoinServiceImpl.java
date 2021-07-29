@@ -19,7 +19,6 @@ import org.springframework.web.client.RestTemplate;
 import com.ctbapit.dao.ICoinDao;
 import com.ctbapit.entity.CurrencyEntity;
 import com.ctbapit.model.bean.CurrencyBean;
-import com.ctbapit.model.config.CurrentPriceConfig;
 import com.ctbapit.model.config.CurrentPriceConfig.CurrentPriceBpiColumn;
 import com.ctbapit.model.config.CurrentPriceConfig.CurrentPriceColumn;
 import com.ctbapit.model.config.CurrentPriceConfig.CurrentPriceTimeColumn;
@@ -29,7 +28,6 @@ import com.ctbapit.model.vo.CurrentPriceVo;
 import com.ctbapit.service.ICoinService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 
 @Service
 public class CoinServiceImpl implements ICoinService{
