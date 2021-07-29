@@ -64,17 +64,18 @@ public class CoinController {
 	@ResponseBody
 	public CurrencyBean addCurrency(@RequestBody CurrencyBean currencyBeanInput) {
 		logger.info("API addCurrency");
-		CurrencyBean ouptut = new CurrencyBean();
+		CurrencyBean output = new CurrencyBean();
 		
 		CurrencyBean currencyBean = coinService.addCurrency(currencyBeanInput);
 		if(currencyBean != null && currencyBean.isSuccess()) {
-			ouptut.setSuccess(true);
+			output.setSuccess(true);
+			output.setReturnMessage("新增成功");
 		}else {
-			ouptut.setSuccess(false);
-			ouptut.setReturnMessage(currencyBean.getReturnMessage());
+			output.setSuccess(false);
+			output.setReturnMessage(currencyBean.getReturnMessage());
 		}
 		
-		return ouptut;
+		return output;
 	}
 	
 	/**

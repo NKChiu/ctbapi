@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,25 +80,34 @@ public class CoinServiceImpl implements ICoinService{
 		boolean goNext = true;
 		String errMsg = null;
 		
-		try {
-			logger.info("1. 查詢幣別對應資料是否重複");
-			CurrencyEntity currencyEntity = coinDao.findByCode(currencyBeanInput.getCode());
-			if(currencyEntity != null) {
-				goNext = false;
-				errMsg = "幣別對應資料重複 : " + currencyBeanInput.getCode();
-			}
-		}catch(Exception e) {
+		logger.info("1. 驗證輸入必填參數");
+		if(currencyBeanInput != null && !this.validateAddCurrency(currencyBeanInput)) {
 			goNext = false;
-			errMsg = "查詢幣別對應資料是否重複失敗: " + e.getMessage();
-			logger.error(errMsg);
+			errMsg = "必填參數為空";
 		}
+		
+		if(goNext) {
+			try {
+				logger.info("2. 查詢幣別對應資料是否重複");
+				CurrencyEntity currencyEntity = coinDao.findByCode(currencyBeanInput.getCode());
+				if(currencyEntity != null) {
+					goNext = false;
+					errMsg = "幣別對應資料重複 : " + currencyBeanInput.getCode();
+				}
+			}catch(Exception e) {
+				goNext = false;
+				errMsg = "查詢幣別對應資料是否重複失敗: " + e.getMessage();
+				logger.error(errMsg);
+			}
+		}
+	
 		
 		String code = "";
 		String codeChn = "";
 		
 		if(goNext) {
 			try {
-				logger.info("2. 新增幣別對應資料");
+				logger.info("3. 新增幣別對應資料");
 				CurrencyEntity currencyEntity = new CurrencyEntity();
 				currencyEntity.setCode(currencyBeanInput.getCode());
 				currencyEntity.setCodeChn(currencyBeanInput.getCodeChn());
@@ -115,7 +125,7 @@ public class CoinServiceImpl implements ICoinService{
 			}
 		}
 		
-		logger.info("3. 整理輸出");
+		logger.info("4. 整理輸出");
 		if(goNext) {
 			output.setSuccess(true);
 			output.setCode(code);
@@ -127,7 +137,6 @@ public class CoinServiceImpl implements ICoinService{
 		
 		return output;
 	}
-	
 	
 
 	/**
@@ -305,5 +314,21 @@ public class CoinServiceImpl implements ICoinService{
 		return currentPrice;
 	}
 
+	
+	
+	/**
+	 * @description validate addCurrency input required
+	 */
+	private boolean validateAddCurrency(CurrencyBean currencyBeanInput) {
+		boolean isValidate = true;
+		if(StringUtils.isEmpty(currencyBeanInput.getCode()) ||
+		   StringUtils.isEmpty(currencyBeanInput.getCodeChn()) ||
+		   StringUtils.isEmpty(currencyBeanInput.getUpdateUser()) ) {
+			isValidate = false;
+		}
+		return isValidate; 
+	}
+	
+	
 	
 }
