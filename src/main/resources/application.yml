@@ -19,7 +19,12 @@ spring:
     username: sa 
     password: 123456 
     sql-script-encoding: utf-8
- 
+    
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+       
 server:
   port: 8091
   
