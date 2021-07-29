@@ -219,23 +219,32 @@ public class CoinServiceImpl implements ICoinService{
 		boolean goNext = true;
 		String errMsg = null;
 		
-		CurrencyEntity currencyEntity = null;
-		try {
-			logger.info("1. 查詢刪除之幣別對應資料是否存在");
-			currencyEntity = coinDao.findByCode(currencyBeanInput.getCode());
-			if(currencyEntity == null) {
-				goNext = false;
-				errMsg = "刪除之幣別對應資料不存在 : " + currencyBeanInput.getCode();
-			}
-		}catch(Exception e) {
+		logger.info("1. 驗證輸入必填參數");
+		if(currencyBeanInput != null && !this.validateDeleteCurrency(currencyBeanInput)) {
 			goNext = false;
-			errMsg = "查詢刪除之幣別對應資料是否存在失敗: " + e.getMessage();
-			logger.error(errMsg);
+			errMsg = "必填參數為空";
 		}
+		
+		CurrencyEntity currencyEntity = null;
+		if(goNext) {
+			try {
+				logger.info("2. 查詢刪除之幣別對應資料是否存在");
+				currencyEntity = coinDao.findByCode(currencyBeanInput.getCode());
+				if(currencyEntity == null) {
+					goNext = false;
+					errMsg = "刪除之幣別對應資料不存在 : " + currencyBeanInput.getCode();
+				}
+			}catch(Exception e) {
+				goNext = false;
+				errMsg = "查詢刪除之幣別對應資料是否存在失敗: " + e.getMessage();
+				logger.error(errMsg);
+			}
+		}
+		
 		
 		if(goNext) {
 			try {
-				logger.info("2. 刪除幣別對應資料: " + currencyEntity.getCode());
+				logger.info("3. 刪除幣別對應資料: " + currencyEntity.getCode());
 				coinDao.delete(currencyEntity);
 			}catch(Exception e) {
 				goNext = false;
@@ -244,7 +253,7 @@ public class CoinServiceImpl implements ICoinService{
 			}
 		}
 		
-		logger.info("3. 整理輸出");
+		logger.info("4. 整理輸出");
 		if(goNext) {
 			output.setSuccess(true);
 		}else {
@@ -352,6 +361,23 @@ public class CoinServiceImpl implements ICoinService{
 		   StringUtils.isEmpty(currencyBeanInput.getUpdateUser().trim()) ) {
 			isValidate = false;
 		}
+		return isValidate; 
+	}
+	
+	
+	/**
+	 * @description validate deleteCurrency input required
+	 */
+	private boolean validateDeleteCurrency(CurrencyBean currencyBeanInput) {
+		boolean isValidate = true;
+		if(currencyBeanInput.getCode() == null ) {
+			isValidate = false;
+		}else {
+			if(StringUtils.isEmpty(currencyBeanInput.getCode().trim())) {
+				isValidate = false;
+			}
+		}
+		
 		return isValidate; 
 	}
 	

@@ -112,6 +112,7 @@ public class CoinController {
 		
 		CurrencyBean currencyBean = coinService.deleteCurrency(currencyBeanInput);
 		if(currencyBean != null && currencyBean.isSuccess()) {
+			output.setReturnMessage("刪除成功");
 			output.setSuccess(true);
 		}else {
 			output.setSuccess(false);
