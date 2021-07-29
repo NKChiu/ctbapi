@@ -7,15 +7,14 @@ import com.ctbapit.model.bean.CurrencyBean;
 
 public class CurrencyAllView extends BaseOutput{
 	
-	private List<CurrencyBean> currencyList;
+	private List<CurrencyView> currencyList;
 
-	public List<CurrencyBean> getCurrencyList() {
+	public List<CurrencyView> getCurrencyList() {
 		return currencyList;
 	}
 
-	public void setCurrencyList(List<CurrencyBean> currencyList) {
+	public void setCurrencyList(List<CurrencyView> currencyList) {
 		this.currencyList = currencyList;
 	}
-	
-	
+
 }

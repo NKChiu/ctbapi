@@ -1,5 +1,6 @@
 package com.ctbapit.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ctbapit.model.bean.CurrencyBean;
 import com.ctbapit.model.view.BpiView;
 import com.ctbapit.model.view.CurrencyAllView;
+import com.ctbapit.model.view.CurrencyView;
 import com.ctbapit.model.view.CurrentPriceTimeView;
 import com.ctbapit.model.view.CurrentPriceView;
 import com.ctbapit.model.view.TransCurrentPriceView;
@@ -49,7 +51,7 @@ public class CoinController {
 		
 		List<CurrencyBean> currencyBeanList = coinService.getAllCurrency();
 		if(currencyBeanList != null && !CollectionUtils.isEmpty(currencyBeanList)) {
-			currencyAllView.setCurrencyList(currencyBeanList);
+			currencyAllView.setCurrencyList(this.arrangeCurrencyList(currencyBeanList));
 			currencyAllView.setSuccess(true);
 		}else {
 			currencyAllView.setReturnMessage("幣別對應資料為空");
@@ -193,6 +195,20 @@ public class CoinController {
 		return transCurrentPriceView;
 	}
 	
+	
+	/**
+	 * @description arrange getAllCurrency output currency
+	 */
+	private List<CurrencyView> arrangeCurrencyList(List<CurrencyBean> currencyBeanList){
+		List<CurrencyView> currencyList = new ArrayList<>();
+		currencyBeanList.forEach(cB -> {
+			CurrencyView cV = new CurrencyView();
+			cV.setCode(cB.getCode());
+			cV.setCodeChn(cB.getCodeChn());
+			currencyList.add(cV);
+		});
+		return currencyList;
+	}
 	
 	
 	/**
